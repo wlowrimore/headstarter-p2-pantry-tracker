@@ -1,13 +1,20 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { User } from "../interfaces";
 import Image from "next/image";
-import { Box, Button, Input, Stack, TextField } from "@mui/material";
+import { Box, Button, Link, Stack, TextField } from "@mui/material";
 import SiteLogo from "../../../public/images/logos/site-logo.png";
+import { useState } from "react";
 
 const Header = () => {
+  const [menuToggled, setMenuToggled] = useState<boolean>(false);
   const { data: session } = useSession();
+
+  const toggleMenu = () => {
+    setMenuToggled(!menuToggled);
+  };
+
   return (
     <Box
       maxWidth={"80rem"}
@@ -29,40 +36,161 @@ const Header = () => {
           color: "green",
         }}
       />
-
-      <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
-        {session?.user && session?.user?.image && (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              marginBottom: "0.3rem",
-            }}
-          >
-            <Image
-              src={session?.user.image}
-              alt={session?.user?.name || "User Image"}
-              width={44}
-              height={44}
-              style={{
-                borderRadius: "50%",
-              }}
-            />
-            <Stack direction="column" spacing={-0.5}>
-              <p
-                style={{
-                  fontWeight: "700",
-                  marginBottom: "0.2rem",
+      {session?.user && session?.user?.image && (
+        <>
+          <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
+            <Stack direction="row" spacing={4} marginBottom={-0.5}>
+              <Link
+                href="#"
+                sx={{
+                  textDecoration: "none",
+                  color: "black",
+                  "&:hover": {
+                    textDecoration: "underline",
+                    color: "#5C5F15",
+                  },
+                  padding: "0.5rem",
                 }}
               >
-                {session?.user?.name}
-              </p>
-              <p style={{ marginBottom: "0.2rem" }}>{session?.user?.email}</p>
+                <p>My Items</p>
+              </Link>
+              <Link
+                href="#"
+                sx={{
+                  textDecoration: "none",
+                  color: "black",
+                  "&:hover": {
+                    textDecoration: "underline",
+                    color: "#5C5F15",
+                  },
+                  padding: "0.5rem",
+                }}
+              >
+                <p>Add Items</p>
+              </Link>
+              <Link
+                href="#"
+                underline={"hover"}
+                sx={{
+                  color: "black",
+                  textDecoration: "none",
+                  padding: "0.5rem",
+                }}
+              >
+                <p>Remove Items</p>
+              </Link>
+              <Link
+                href="#"
+                underline={"hover"}
+                sx={{
+                  textDecoration: "none",
+                  color: "black",
+                  "&:hover": {
+                    textDecoration: "underline",
+                    color: "#5C5F15",
+                  },
+                  padding: "0.5rem",
+                }}
+              >
+                <p>Update List</p>
+              </Link>
+              <Link
+                href="#"
+                sx={{
+                  textDecoration: "none",
+                  color: "black",
+                  "&:hover": {
+                    textDecoration: "underline",
+                    color: "#5C5F15",
+                  },
+                  padding: "0.5rem",
+                }}
+              >
+                <p>Dashboard</p>
+              </Link>
             </Stack>
           </Box>
-        )}
-      </Box>
+
+          <Box
+            display={"flex"}
+            alignItems={"end"}
+            gap={"1rem"}
+            position={"relative"}
+          >
+            <Box
+              onClick={toggleMenu}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.3rem 0.7rem",
+                "&:hover": {
+                  cursor: "pointer",
+                  backgroundColor: "#D9EABE",
+                  borderRadius: "2rem",
+                },
+              }}
+            >
+              <Image
+                src={session?.user.image}
+                alt={session?.user?.name || "User Image"}
+                width={44}
+                height={44}
+                style={{
+                  borderRadius: "50%",
+                }}
+              />
+              <Stack direction="column" spacing={-0.5}>
+                <p
+                  style={{
+                    fontWeight: "700",
+                    marginBottom: "0.2rem",
+                  }}
+                >
+                  {session?.user?.name}
+                </p>
+                <p style={{ marginBottom: "0.2rem" }}>{session?.user?.email}</p>
+              </Stack>
+            </Box>
+            {menuToggled && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "1rem",
+                  padding: "3rem",
+                  position: "absolute",
+                  zIndex: "1",
+                  right: "2%",
+                  transform: "translateX(-4%)" || "translateX(0%)",
+                  top: "5.7rem",
+                  backgroundColor: "#D9EABE",
+                  opacity: "0.8",
+                  width: "30rem",
+                  height: "30.5rem",
+                }}
+              >
+                <Box
+                  onClick={() => signOut()}
+                  sx={{
+                    fontSize: "1.5rem",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#3B7B51",
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  logout
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
