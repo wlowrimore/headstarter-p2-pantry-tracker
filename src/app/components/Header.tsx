@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <Box
       maxWidth={"80rem"}
-      padding={"1rem 0 0.25rem 0"}
+      padding={"1rem 1rem 0.25rem 1rem"}
       display={"flex"}
       justifyContent={"space-between"}
       alignItems={"end"}
@@ -38,7 +38,7 @@ const Header = () => {
       />
       {session?.user && session?.user?.image && (
         <>
-          <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
+          {/* <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
             <Stack direction="row" spacing={4} marginBottom={-0.5}>
               <Link
                 href="#"
@@ -109,8 +109,9 @@ const Header = () => {
                 <p>Dashboard</p>
               </Link>
             </Stack>
-          </Box>
+          </Box> */}
 
+          {/* User Profile */}
           <Box
             display={"flex"}
             alignItems={"end"}
@@ -152,6 +153,8 @@ const Header = () => {
                 <p style={{ marginBottom: "0.2rem" }}>{session?.user?.email}</p>
               </Stack>
             </Box>
+
+            {/* Menu */}
             {menuToggled && (
               <Box
                 sx={{
