@@ -5,15 +5,29 @@ import { User } from "../interfaces";
 import Image from "next/image";
 import { Box, Button, Link, Stack, TextField } from "@mui/material";
 import SiteLogo from "../../../public/images/logos/site-logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const [isNotMain, setIsNotMain] = useState<boolean>(false);
   const [menuToggled, setMenuToggled] = useState<boolean>(false);
   const { data: session } = useSession();
+  const path = usePathname();
 
   const toggleMenu = () => {
     setMenuToggled(!menuToggled);
   };
+
+  useEffect(() => {
+    const getPath = () => {
+      if (path === "/") {
+        setIsNotMain(true);
+      } else {
+        setIsNotMain(false);
+      }
+    };
+    getPath();
+  }, [path]);
 
   return (
     <Box
@@ -38,78 +52,80 @@ const Header = () => {
       />
       {session?.user && session?.user?.image && (
         <>
-          {/* <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
-            <Stack direction="row" spacing={4} marginBottom={-0.5}>
-              <Link
-                href="#"
-                sx={{
-                  textDecoration: "none",
-                  color: "black",
-                  "&:hover": {
-                    textDecoration: "underline",
-                    color: "#5C5F15",
-                  },
-                  padding: "0.5rem",
-                }}
-              >
-                <p>My Items</p>
-              </Link>
-              <Link
-                href="#"
-                sx={{
-                  textDecoration: "none",
-                  color: "black",
-                  "&:hover": {
-                    textDecoration: "underline",
-                    color: "#5C5F15",
-                  },
-                  padding: "0.5rem",
-                }}
-              >
-                <p>Add Items</p>
-              </Link>
-              <Link
-                href="#"
-                underline={"hover"}
-                sx={{
-                  color: "black",
-                  textDecoration: "none",
-                  padding: "0.5rem",
-                }}
-              >
-                <p>Remove Items</p>
-              </Link>
-              <Link
-                href="#"
-                underline={"hover"}
-                sx={{
-                  textDecoration: "none",
-                  color: "black",
-                  "&:hover": {
-                    textDecoration: "underline",
-                    color: "#5C5F15",
-                  },
-                  padding: "0.5rem",
-                }}
-              >
-                <p>Update List</p>
-              </Link>
-              <Link
-                href="#"
-                sx={{
-                  textDecoration: "none",
-                  color: "black",
-                  "&:hover": {
-                    textDecoration: "underline",
-                    color: "#5C5F15",
-                  },
-                  padding: "0.5rem",
-                }}
-              >
-                <p>Dashboard</p>
-              </Link>
-            </Stack>
-          </Box> */}
+          {!isNotMain && (
+            <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
+              <Stack direction="row" spacing={4} marginBottom={-0.5}>
+                <Link
+                  href="#"
+                  sx={{
+                    textDecoration: "none",
+                    color: "black",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      color: "#5C5F15",
+                    },
+                    padding: "0.5rem",
+                  }}
+                >
+                  <p>My Items</p>
+                </Link>
+                <Link
+                  href="#"
+                  sx={{
+                    textDecoration: "none",
+                    color: "black",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      color: "#5C5F15",
+                    },
+                    padding: "0.5rem",
+                  }}
+                >
+                  <p>Add Items</p>
+                </Link>
+                <Link
+                  href="#"
+                  underline={"hover"}
+                  sx={{
+                    color: "black",
+                    textDecoration: "none",
+                    padding: "0.5rem",
+                  }}
+                >
+                  <p>Remove Items</p>
+                </Link>
+                <Link
+                  href="#"
+                  underline={"hover"}
+                  sx={{
+                    textDecoration: "none",
+                    color: "black",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      color: "#5C5F15",
+                    },
+                    padding: "0.5rem",
+                  }}
+                >
+                  <p>Update List</p>
+                </Link>
+                <Link
+                  href="#"
+                  sx={{
+                    textDecoration: "none",
+                    color: "black",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      color: "#5C5F15",
+                    },
+                    padding: "0.5rem",
+                  }}
+                >
+                  <p>Dashboard</p>
+                </Link>
+              </Stack>
+            </Box>
+          )}
 
           {/* User Profile */}
           <Box

@@ -26,7 +26,7 @@ export default function RootLayout({
               backgroundColor: "#478F59",
               maxWidth: "80rem",
               display: "flex",
-              justifyContent: "center",
+              // justifyContent: "center",
               margin: "0 auto",
             }}
           >
@@ -36,7 +36,7 @@ export default function RootLayout({
             style={{
               maxWidth: "80rem",
               display: "flex",
-              justifyContent: "center",
+              // justifyContent: "center",
               margin: "0 auto",
             }}
           >

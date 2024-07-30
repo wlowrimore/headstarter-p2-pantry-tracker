@@ -21,7 +21,8 @@ const HeroComponent = () => {
       <Grid
         container
         sx={{
-          maxWidth: "80rem",
+          maxWidth: "100%",
+          width: "100%",
           height: "100%",
           maxHeight: "100vh",
           margin: "1rem auto",
@@ -34,7 +35,7 @@ const HeroComponent = () => {
           sx={{
             width: "40%",
             color: "#D9EABE",
-            padding: "0 1rem 0 0",
+            padding: "0 1rem",
           }}
         >
           <Box
@@ -162,7 +163,7 @@ const HeroComponent = () => {
           <Image
             src={Hero}
             alt="Pantry Hero"
-            width={500}
+            width={700}
             height={500}
             style={{
               width: "100%",

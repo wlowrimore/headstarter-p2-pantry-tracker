@@ -10,20 +10,37 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-
+import { usePathname } from "next/navigation";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 const SignInComponent = () => {
+  const [isPath, setIsPath] = useState(false);
   const { data: session } = useSession();
+  const path = usePathname();
+
+  useEffect(() => {
+    const getPath = () => {
+      if (path === "/pantry") {
+        setIsPath(true);
+      } else {
+        setIsPath(false);
+      }
+    };
+
+    getPath();
+  }, [path]);
+
+  console.log(`This is ${path}`);
 
   return (
     <Box
       sx={{
-        display: "flex",
+        display: isPath ? "none" : "flex",
         justifyContent: "center",
         width: "100%",
         marginTop: "0.3rem",
@@ -53,7 +70,7 @@ const SignInComponent = () => {
       ) : (
         <Box sx={{ display: "flex", flexDirection: "row", gap: "5rem" }}>
           <Link
-            href="#"
+            href="/pantry"
             sx={{
               display: "flex",
               alignItems: "center",
