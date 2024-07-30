@@ -1,9 +1,13 @@
-import { Box, Button, Input, TextField } from "@mui/material";
-import Image from "next/image";
+"use client";
 
+import { useSession } from "next-auth/react";
+import { User } from "../interfaces";
+import Image from "next/image";
+import { Box, Button, Input, Stack, TextField } from "@mui/material";
 import SiteLogo from "../../../public/images/logos/site-logo.png";
 
 const Header = () => {
+  const { data: session } = useSession();
   return (
     <Box
       maxWidth={"80rem"}
@@ -27,9 +31,37 @@ const Header = () => {
       />
 
       <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
-        <Button variant="text" style={{ color: "black" }}>
-          Login
-        </Button>
+        {session?.user && session?.user?.image && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginBottom: "0.3rem",
+            }}
+          >
+            <Image
+              src={session?.user.image}
+              alt={session?.user?.name || "User Image"}
+              width={44}
+              height={44}
+              style={{
+                borderRadius: "50%",
+              }}
+            />
+            <Stack direction="column" spacing={-0.5}>
+              <p
+                style={{
+                  fontWeight: "700",
+                  marginBottom: "0.2rem",
+                }}
+              >
+                {session?.user?.name}
+              </p>
+              <p style={{ marginBottom: "0.2rem" }}>{session?.user?.email}</p>
+            </Stack>
+          </Box>
+        )}
       </Box>
     </Box>
   );
