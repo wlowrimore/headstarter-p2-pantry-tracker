@@ -10,3 +10,9 @@ export function extractFirstName() {
     return null;
   }
 }
+
+export async function getPantryItems() {
+  const data = await fetch("/json/pantryItems.json");
+  const items = await data.json();
+  return items;
+}

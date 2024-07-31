@@ -1,0 +1,72 @@
+[
+  {
+    "id": "1",
+    "name": "Apples",
+    "unit": "pieces",
+    "quantity": 3,
+    "notes": "Red delicious"
+  },
+  {
+    "id": "2",
+    "name": "Bananas",
+    "unit": "pieces",
+    "quantity": 5,
+    "notes": "Very Ripe"
+  },
+  {
+    "id": "3",
+    "unit": "pieces",
+    "name": "Potatoes",
+    "quantity": 5,
+    "notes": "Baby Reds"
+  },
+  {
+    "id": "4",
+    "name": "Carrots",
+    "unit": "pieces",
+    "quantity": 3,
+    "notes": "Need to be eaten soon"
+  },
+  {
+    "id": "5",
+    "name": "Ground Chuck",
+    "unit": "1 pound",
+    "quantity": 2,
+    "notes": "1 pound"
+  },
+  {
+    "id": "1",
+    "name": "Chicken Breasts",
+    "unit": "6 pack",
+    "quantity": 1,
+    "notes": "Boneless Skinless"
+  },
+  {
+    "id": "7",
+    "name": "Milk",
+    "unit": "1 gallon",
+    "quantity": 1,
+    "notes": "2% fat"
+  },
+  {
+    "id": "8",
+    "name": "Cheese",
+    "unit": "8 oz",
+    "quantity": 2,
+    "notes": "Cheddar, PepperJack"
+  },
+  {
+    "id": "9",
+    "name": "Rice",
+    "unit": "1 pound",
+    "quantity": 3,
+    "notes": "3 x 1 pound bags"
+  },
+  {
+    "id": "10",
+    "name": "Beans",
+    "unit": "1 pound",
+    "quantity": 2,
+    "notes": "Red Beans"
+  }
+]

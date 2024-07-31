@@ -1,9 +1,8 @@
-export interface PantryItem {
+export interface Ingredients {
   id: string;
   name: string;
   quantity: number;
   unit: string;
-  expirationDate: Date;
   notes: string;
 }
 
@@ -12,4 +11,12 @@ export interface User {
   name: string;
   email: string;
   image: string;
+}
+
+export interface Column {
+  id: "name" | "unit" | "quantity" | "notes";
+  label: string;
+  minWidth?: number;
+  align?: "right";
+  format?: (value: number) => string;
 }
