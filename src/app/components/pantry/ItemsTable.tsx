@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Column, Ingredients } from "../../interfaces";
+import { getPantryItems } from "../../utils/helpers";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -37,7 +38,20 @@ const rows = [
 export default function ItemsTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pantryItems, setPantryItems] = useState<Ingredients[]>([]);
 
+  useEffect(() => {
+    const fetchItems = async () => {
+      const items = await getPantryItems();
+      setPantryItems(items);
+    };
+    fetchItems();
+  }, []);
+
+  const rows = pantryItems;
+  // useEffect(() => {
+  //   console.log("PantryItems:", pantryItems);
+  // }, []);
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
