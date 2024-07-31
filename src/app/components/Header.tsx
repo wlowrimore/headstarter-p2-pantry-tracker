@@ -39,17 +39,19 @@ const Header = () => {
       margin={"0.5rem auto"}
       borderBottom={"1px solid gray"}
     >
-      <Image
-        src={SiteLogo}
-        alt="Pantry Tracker Logo"
-        width={500}
-        height={500}
-        style={{
-          width: "6rem",
-          height: "6rem",
-          color: "green",
-        }}
-      />
+      <Link href="/">
+        <Image
+          src={SiteLogo}
+          alt="Pantry Tracker Logo"
+          width={500}
+          height={500}
+          style={{
+            width: "6rem",
+            height: "6rem",
+            color: "green",
+          }}
+        />
+      </Link>
       {session?.user && session?.user?.image && (
         <>
           {!isNotMain && (

@@ -11,14 +11,6 @@ const PantryMain: React.FC = () => {
   const { data: session } = useSession();
   const name = extractFirstName();
 
-  // useEffect(() => {
-  //   const fetchItems = async () => {
-  //     const items = await getPantryItems();
-  //     setPantryItems(items);
-  //   };
-  //   fetchItems();
-  // }, []);
-
   return (
     <Box style={{ width: "100%", display: "flex", flexDirection: "column" }}>
       {!session ? (
@@ -56,11 +48,6 @@ const PantryMain: React.FC = () => {
           </Box>
         </Box>
       )}
-      {/* {pantryItems?.map((item) => (
-        <Box key={item.id}>
-          <p>{item.name}</p>
-        </Box>
-      ))} */}
       <ItemsTable />
     </Box>
   );

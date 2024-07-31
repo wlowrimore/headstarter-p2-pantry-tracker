@@ -29,12 +29,6 @@ function createData(
   return { id, name, unit, quantity, notes };
 }
 
-const rows = [
-  createData("1", "Banana", "pcs", 1, "fresh"),
-  createData("2", "Potato", "pcs", 1, "fresh"),
-  createData("3", "Tomato", "pcs", 1, "fresh"),
-];
-
 export default function ItemsTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -49,9 +43,7 @@ export default function ItemsTable() {
   }, []);
 
   const rows = pantryItems;
-  // useEffect(() => {
-  //   console.log("PantryItems:", pantryItems);
-  // }, []);
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -73,7 +65,13 @@ export default function ItemsTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{
+                    minWidth: column.minWidth,
+                    backgroundColor: "#D9EABE",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    borderBottom: "1px solid #2B3C34",
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -85,7 +83,17 @@ export default function ItemsTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.name}
+                    sx={{
+                      backgroundColor: "#F5F5DC",
+                      borderBottom: "1px solid #2B3C34",
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
