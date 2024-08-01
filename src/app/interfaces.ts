@@ -13,6 +13,12 @@ export interface Ingredients {
   notes: string;
 }
 
+export interface EditingModalProps {
+  item: Ingredients | null;
+  onClose: () => void;
+  onSave: (updatedItem: Ingredients) => void;
+}
+
 export interface Column {
   id: "name" | "unit" | "quantity" | "notes";
   label: string;

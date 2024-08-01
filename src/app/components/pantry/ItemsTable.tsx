@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 
@@ -15,6 +15,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import AddItems from "./AddItems";
 import PantryMain from "./PantryMain";
+import { Input } from "@mui/material";
+import EditingModal from "./modals/EditingModal";
 
 const columns: readonly Column[] = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -34,31 +36,14 @@ function createData(
 }
 
 export default function ItemsTable() {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<Ingredients | null>(null);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [fetchedPantryItems, setFetchedPantryItems] = useState<Ingredients[]>(
     []
   );
-
-  // Get Pantry Items
-  // useEffect(() => {
-  //   const getPantryItems = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "pantryItems"));
-  //     const items: Ingredients[] = [];
-  //     querySnapshot.forEach((doc) => {
-  //       items.push({
-  //         id: doc.id,
-  //         name: doc.data().name,
-  //         unit: doc.data().unit,
-  //         quantity: doc.data().quantity,
-  //         notes: doc.data().notes,
-  //       });
-  //     });
-  //     setFetchedPantryItems(items);
-  //   };
-
-  //   getPantryItems();
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -74,7 +59,7 @@ export default function ItemsTable() {
             notes: doc.data().notes,
           });
         });
-        setFetchedPantryItems(items);
+        setFetchedPantryItems(items.sort((a, b) => b.id.localeCompare(a.id)));
       }
     );
 
@@ -94,6 +79,11 @@ export default function ItemsTable() {
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleRowClick = (row: Ingredients) => {
+    setSelectedRow(row);
+    setIsModalOpen(true);
   };
 
   return (
@@ -122,6 +112,7 @@ export default function ItemsTable() {
             </TableHead>
             <TableBody>
               {rows
+                .sort((a, b) => b.id.localeCompare(a.id))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -130,7 +121,9 @@ export default function ItemsTable() {
                       role="checkbox"
                       tabIndex={-1}
                       key={row.name}
+                      onClick={() => handleRowClick(row)}
                       sx={{
+                        cursor: "pointer",
                         backgroundColor: "#F5F5DC",
                         borderBottom: "1px solid #2B3C34",
                         "&:last-child td, &:last-child th": { border: 0 },
@@ -151,6 +144,15 @@ export default function ItemsTable() {
                 })}
             </TableBody>
           </Table>
+          {isModalOpen && (
+            <EditingModal
+              item={selectedRow}
+              onClose={() => setIsModalOpen(false)}
+              onSave={(updatedItem) => {
+                setIsModalOpen(false);
+              }}
+            />
+          )}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
