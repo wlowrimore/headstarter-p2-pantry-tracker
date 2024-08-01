@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import { Box, Button, Link } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import { extractFirstName } from "../../utils/helpers";
-import { Ingredients } from "../../interfaces";
+
 import ItemsTable from "./ItemsTable";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import AddItems from "./AddItems";
 
 const PantryMain: React.FC = () => {
-  const [pantryItems, setPantryItems] = useState<Ingredients[]>([]);
+  // const [pantryItems, setPantryItems] = useState<Ingredients[]>([]);
   const [showAddItems, setShowAddItems] = useState<boolean>(false);
   const { data: session } = useSession();
   const name = extractFirstName();

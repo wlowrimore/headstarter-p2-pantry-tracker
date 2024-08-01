@@ -1,10 +1,65 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Ingredients } from "../../interfaces";
+import { collection, addDoc } from "firebase/firestore";
 import { Box, Button, Input } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
+import { db } from "../../firebase";
+
 const AddItems: React.FC = () => {
+  const [newPantryItem, setNewPantryItem] = useState<Ingredients[]>([
+    { id: "", name: "", unit: "", quantity: "", notes: "" },
+  ]);
+
+  const addItem = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (
+      newPantryItem[0].name !== "" &&
+      newPantryItem[0].unit !== "" &&
+      newPantryItem[0].quantity !== ""
+    ) {
+      try {
+        const docRef = await addDoc(collection(db, "pantryItems"), {
+          name: newPantryItem[0].name.trim(),
+          unit: newPantryItem[0].unit.trim(),
+          quantity: newPantryItem[0].quantity.trim(),
+          notes: newPantryItem[0].notes.trim(),
+        });
+
+        console.log("Document written with ID: ", docRef.id);
+
+        setNewPantryItem([
+          {
+            id: "",
+            name: "",
+            unit: "",
+            quantity: "",
+            notes: "",
+          },
+        ]);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    } else {
+      console.log("Please fill out all fields");
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewPantryItem((prevItems) => {
+      return prevItems.map((item, index) => {
+        if (index === 0) {
+          return { ...item, [name]: value };
+        }
+        return item;
+      });
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -16,6 +71,7 @@ const AddItems: React.FC = () => {
       }}
     >
       <form
+        onSubmit={addItem}
         style={{
           display: "flex",
           flexDirection: "row",
@@ -31,6 +87,8 @@ const AddItems: React.FC = () => {
           }}
           type="text"
           name="name"
+          value={newPantryItem[0].name}
+          onChange={handleInputChange}
           placeholder="Item Name"
         />
         <Input
@@ -41,6 +99,8 @@ const AddItems: React.FC = () => {
           }}
           type="text"
           name="unit"
+          value={newPantryItem[0].unit}
+          onChange={handleInputChange}
           placeholder="Unit"
         />
         <Input
@@ -50,6 +110,8 @@ const AddItems: React.FC = () => {
           }}
           type="text"
           name="quantity"
+          value={newPantryItem[0].quantity}
+          onChange={handleInputChange}
           placeholder="Quantity"
         />
         <Input
@@ -59,6 +121,8 @@ const AddItems: React.FC = () => {
           }}
           type="text"
           name="notes"
+          value={newPantryItem[0].notes}
+          onChange={handleInputChange}
           placeholder="Notes"
         />
         <Button

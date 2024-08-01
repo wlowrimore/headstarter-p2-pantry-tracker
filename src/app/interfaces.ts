@@ -1,16 +1,16 @@
-export interface Ingredients {
-  id: string;
-  name: string;
-  quantity: number;
-  unit: string;
-  notes: string;
-}
-
 export interface User {
   id: string;
   name: string;
   email: string;
   image: string;
+}
+
+export interface Ingredients {
+  id: string;
+  name: string;
+  unit: string;
+  quantity: string;
+  notes: string;
 }
 
 export interface Column {
