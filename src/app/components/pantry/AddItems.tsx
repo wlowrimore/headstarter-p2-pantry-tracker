@@ -143,10 +143,6 @@ const AddItems: React.FC = () => {
             style={{
               display: "flex",
               alignItems: "center",
-              border: "1px solid white",
-              borderTop: "none",
-              borderBottom: "none",
-              borderRadius: "50%",
               padding: "0.4rem 0.9rem 0.4rem 0.5rem",
             }}
           >

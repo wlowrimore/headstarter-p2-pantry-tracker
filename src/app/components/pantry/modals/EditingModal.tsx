@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import { Box, Button, Input } from "@mui/material";
 import { EditingModalProps, Ingredients } from "../../../interfaces";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-const EditingModal = ({ item, onClose, onSave }: EditingModalProps) => {
+const EditingModal = ({
+  item,
+  onClose,
+  onSave,
+  onDelete,
+  handleSave,
+}: EditingModalProps) => {
   if (!item) {
     return null;
   }
@@ -12,12 +18,16 @@ const EditingModal = ({ item, onClose, onSave }: EditingModalProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedItem({ ...editedItem, [e.target.name]: e.target.value });
+
+    handleSave();
   };
 
   const handleSubmit = () => {
     onSave(editedItem);
     onClose();
   };
+
+  const handleDelete = () => {};
 
   return (
     <Box
@@ -29,11 +39,14 @@ const EditingModal = ({ item, onClose, onSave }: EditingModalProps) => {
         zIndex: "10",
         width: "100%",
         maxWidth: "80rem",
-        height: "20vh",
+        height: "30vh",
+        maxHeight: "30vh",
         display: "flex",
         border: "1px solid #478e59",
         borderRadius: "1rem",
-        backgroundColor: "#d1fccf",
+        boxShadow: "2px 2px 20px 0 rgba(0, 0, 0, 0.6)",
+        backdropFilter: "blur(5px)",
+        backgroundColor: "#D9EABE",
         flexDirection: "column",
         padding: "0 1rem",
       }}
@@ -138,6 +151,21 @@ const EditingModal = ({ item, onClose, onSave }: EditingModalProps) => {
             }}
           >
             Save
+          </Button>
+          <Button onClick={onDelete}>
+            <CloseOutlinedIcon
+              sx={{
+                cursor: "pointer",
+                fontSize: "1.8rem",
+                padding: "0.3rem",
+                color: "#2B3C34",
+                borderRadius: "50%",
+                "&:hover": {
+                  backgroundColor: "#f0f0f0",
+                },
+              }}
+            />
+            Delete
           </Button>
         </form>
       </Box>

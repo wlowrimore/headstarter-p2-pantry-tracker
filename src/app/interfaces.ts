@@ -17,6 +17,15 @@ export interface EditingModalProps {
   item: Ingredients | null;
   onClose: () => void;
   onSave: (updatedItem: Ingredients) => void;
+  handleSave: () => void;
+  onDelete: () => void;
+}
+
+export interface UpdatableIngredient {
+  name: string;
+  unit: string;
+  quantity: string;
+  notes: string;
 }
 
 export interface Column {

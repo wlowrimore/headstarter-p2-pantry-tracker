@@ -1,10 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  FieldValue,
+  onSnapshot,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
-import { Column, Ingredients } from "../../interfaces";
+import { Column, Ingredients, UpdatableIngredient } from "../../interfaces";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,9 +23,10 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import AddItems from "./AddItems";
 import PantryMain from "./PantryMain";
-import { Input } from "@mui/material";
+import { Box, Button, Input } from "@mui/material";
 import EditingModal from "./modals/EditingModal";
-
+import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
+import ItemSearch from "../UI/ItemSearch";
 const columns: readonly Column[] = [
   { id: "name", label: "Name", minWidth: 170 },
   { id: "unit", label: "Unit", minWidth: 100 },
@@ -37,13 +46,16 @@ function createData(
 
 export default function ItemsTable() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isAscendingOrder, setIsAscendingOrder] = useState<boolean>(true);
   const [selectedRow, setSelectedRow] = useState<Ingredients | null>(null);
+  const [updatedItem, setUpdatedItem] = useState<Ingredients | null>(null);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [fetchedPantryItems, setFetchedPantryItems] = useState<Ingredients[]>(
     []
   );
+  const [ingredients, setIngredients] = useState<Ingredients[]>();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -68,6 +80,10 @@ export default function ItemsTable() {
     };
   }, []);
 
+  useEffect(() => {
+    setIngredients(fetchedPantryItems);
+  }, [fetchedPantryItems]);
+  console.log("INGREDIENTS", ingredients);
   const rows = fetchedPantryItems;
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -86,10 +102,92 @@ export default function ItemsTable() {
     setIsModalOpen(true);
   };
 
+  const handleSave = (updatedItem: Ingredients) => {
+    const updates: Record<string, any> = {};
+    if (updatedItem) {
+      for (const key in updatedItem) {
+        if (updatedItem.hasOwnProperty(key)) {
+          updates[key as keyof Ingredients] =
+            updatedItem[key as keyof Ingredients];
+        }
+      }
+    }
+
+    updateDoc(doc(db, "pantryItems", updatedItem.id), updates)
+      .then(() => {
+        console.log("Item updated successfully");
+      })
+      .catch((error) => {
+        console.error("Error updating item:", error);
+      });
+
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async () => {
+    if (selectedRow && ingredients) {
+      console.log("Delete item:", selectedRow.name);
+
+      await deleteDoc(doc(db, "pantryItems", selectedRow.id))
+        .then(() => {
+          const updatedList = ingredients.filter(
+            (item: Ingredients) => item.id !== selectedRow.id
+          );
+          setIngredients(updatedList);
+        })
+        .catch((error) => {
+          console.error(
+            "Error marking item as deleted in the database:",
+            error
+          );
+        });
+
+      setSelectedRow(null);
+      setIsModalOpen(false);
+    }
+  };
+  const toggleSort = () => {
+    if (isAscendingOrder) {
+      const sortedRows = [...rows].sort((a, b) => b.id.localeCompare(a.id));
+      setFetchedPantryItems(sortedRows);
+    } else {
+      const sortedRows = [...rows].sort((a, b) => a.id.localeCompare(b.id));
+      setFetchedPantryItems(sortedRows);
+    }
+    setIsAscendingOrder(!isAscendingOrder);
+  };
+
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "0.5rem 1rem",
+              backgroundColor: "#D9EABE",
+              fontWeight: "bold",
+              fontSize: "1rem",
+              borderBottom: "1px solid #2B3C34",
+            }}
+          >
+            <ItemSearch
+              ingredients={rows}
+              setFilteredItems={setFetchedPantryItems}
+            />
+            <p
+              onClick={toggleSort}
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              Sort By Name&nbsp;
+              <SwapVertOutlinedIcon />
+            </p>
+          </Box>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -112,7 +210,7 @@ export default function ItemsTable() {
             </TableHead>
             <TableBody>
               {rows
-                .sort((a, b) => b.id.localeCompare(a.id))
+                // .sort((a, b) => b.id.localeCompare(a.id))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -148,8 +246,18 @@ export default function ItemsTable() {
             <EditingModal
               item={selectedRow}
               onClose={() => setIsModalOpen(false)}
-              onSave={(updatedItem) => {
+              onSave={(newItem: Ingredients) => {
                 setIsModalOpen(false);
+                if (newItem) {
+                  setUpdatedItem(newItem);
+                  handleSave(newItem);
+                }
+              }}
+              onDelete={handleDelete}
+              handleSave={() => {
+                if (updatedItem) {
+                  handleSave(updatedItem);
+                }
               }}
             />
           )}
