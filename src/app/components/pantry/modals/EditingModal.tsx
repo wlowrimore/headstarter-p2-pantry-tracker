@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Box, Button, Input } from "@mui/material";
 import { EditingModalProps, Ingredients } from "../../../interfaces";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 const EditingModal = ({
   item,
   onClose,
@@ -152,20 +153,25 @@ const EditingModal = ({
           >
             Save
           </Button>
-          <Button onClick={onDelete}>
-            <CloseOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                fontSize: "1.8rem",
-                padding: "0.3rem",
-                color: "#2B3C34",
-                borderRadius: "50%",
-                "&:hover": {
-                  backgroundColor: "#f0f0f0",
-                },
-              }}
-            />
-            Delete
+          <Button
+            onClick={onDelete}
+            sx={{
+              outline: "none",
+              border: "1px solid indianred",
+              padding: "0.2rem 1rem 0.1rem 1rem",
+              backgroundColor: "indianred",
+              borderRadius: "0.3rem",
+              color: "#2B3C34",
+              cursor: "pointer",
+              marginLeft: "0.5rem",
+              marginBottom: "0.3rem",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "000000",
+              },
+            }}
+          >
+            <DeleteForeverOutlinedIcon sx={{ color: "white" }} />
           </Button>
         </form>
       </Box>
