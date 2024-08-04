@@ -3,17 +3,15 @@
 import { useState, useEffect } from "react";
 import { usePantry } from "../../../providers/PantryProvider";
 import {
-  collection,
   doc,
-  getDocs,
-  FieldValue,
-  onSnapshot,
   updateDoc,
   deleteDoc,
+  collection,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
-import { Column, Ingredients, UpdatableIngredient } from "../../interfaces";
+import { Column, Ingredients } from "../../interfaces";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -22,13 +20,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import AddItems from "./AddItems";
 import { Box, Button, Input } from "@mui/material";
 import EditingModal from "./modals/EditingModal";
 import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
-import ItemSearch from "../ItemSearch";
-import PantrySearch from "../UI/PantrySearch";
-import ListRefresh from "../UI/ListRefresh";
+import { getPantryItems } from "../../utils/helpers";
 const columns: readonly Column[] = [
   { id: "name", label: "Name", minWidth: 170 },
   { id: "unit", label: "Unit", minWidth: 100 },
@@ -37,17 +32,19 @@ const columns: readonly Column[] = [
 ];
 
 interface ItemsTableProps {
-  ingredients: Ingredients[];
-  onFilterChange: (filter: string) => void;
-  onSearch: (query: string) => void;
+  filteredItems: Ingredients[];
+  items: Ingredients[];
 }
 
-const ItemsTable: React.FC = () => {
+const ItemsTable: React.FC<ItemsTableProps> = () => {
   const { pantryItems, setPantryItems } = usePantry();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAscendingOrder, setIsAscendingOrder] = useState<boolean>(true);
   const [selectedRow, setSelectedRow] = useState<Ingredients | null>(null);
   const [updatedItem, setUpdatedItem] = useState<Ingredients | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredItems, setFilteredItems] = useState<Ingredients[]>([]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -61,30 +58,18 @@ const ItemsTable: React.FC = () => {
     const unsubscribe = onSnapshot(
       collection(db, "pantryItems"),
       (snapshot) => {
-        const items: Ingredients[] = [];
-        snapshot.forEach((doc) => {
-          items.push({
-            id: doc.id,
-            name: doc.data().name,
-            unit: doc.data().unit,
-            quantity: doc.data().quantity,
-            notes: doc.data().notes,
-          });
-        });
-        setFetchedPantryItems(items.sort((a, b) => b.id.localeCompare(a.id)));
+        const items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+          unit: doc.data().unit,
+          quantity: doc.data().quantity,
+          notes: doc.data().notes,
+        }));
+        setPantryItems(items);
       }
     );
-
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    setIngredients(fetchedPantryItems);
-  }, [fetchedPantryItems]);
-
-  const rows = fetchedPantryItems;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -147,21 +132,25 @@ const ItemsTable: React.FC = () => {
     }
   };
   const toggleSort = () => {
+    console.log("TOGGLING SORT!!!!", toggleSort);
     if (isAscendingOrder) {
       const sortedRows = [...rows].sort((a, b) => b.id.localeCompare(a.id));
-      setFetchedPantryItems(sortedRows);
+      setFilteredItems(sortedRows);
     } else {
       const sortedRows = [...rows].sort((a, b) => a.id.localeCompare(b.id));
-      setFetchedPantryItems(sortedRows);
+      setFilteredItems(sortedRows);
     }
+    console.log("Sorted rows:", fetchedPantryItems);
     setIsAscendingOrder(!isAscendingOrder);
   };
+
+  console.log("TOGGLE SORT!!!!, toggleSort:", toggleSort);
 
   useEffect(() => {
     setDisplayedItems(fetchedPantryItems);
   }, [fetchedPantryItems]);
 
-  const handleFislterChange = (filter: string) => {
+  const handleFilterChange = (filter: string) => {
     if (filter === "") {
       setDisplayedItems(fetchedPantryItems);
     } else {
@@ -171,9 +160,30 @@ const ItemsTable: React.FC = () => {
     }
   };
 
-  const handleRefresh = () => {
-    console.log("handleRefresh", pantryItems);
+  useEffect(() => {
+    const getItems = async () => {
+      const items = await getPantryItems();
+      setPantryItems(items);
+    };
+
+    getItems();
+  }, []);
+
+  useEffect(() => {
+    const filtered = pantryItems.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredItems(filtered);
+  }, [pantryItems, searchQuery]);
+  console.log("Filtered items:", filteredItems);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLowerCase());
   };
+
+  const rows = filteredItems;
+
+  console.log("Rows:", rows);
 
   return (
     <>
@@ -190,10 +200,18 @@ const ItemsTable: React.FC = () => {
               borderBottom: "1px solid #2B3C34",
             }}
           >
-            <ItemSearch
-              ingredients={fetchedPantryItems}
-              onFilterChange={setFetchedPantryItems}
-            />
+            <>
+              {filteredItems.length > 0 && (
+                <form style={{ display: "flex", alignItems: "center" }}>
+                  <Input
+                    onChange={handleSearch}
+                    value={searchQuery}
+                    type="text"
+                    placeholder="Search By Name"
+                  />
+                </form>
+              )}
+            </>
 
             <p
               style={{
@@ -202,9 +220,7 @@ const ItemsTable: React.FC = () => {
                 alignItems: "center",
                 gap: "0.5rem",
               }}
-            >
-              <ListRefresh />
-            </p>
+            ></p>
 
             <p
               onClick={toggleSort}
@@ -241,7 +257,7 @@ const ItemsTable: React.FC = () => {
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row: Ingredients) => {
                   return (
                     <TableRow
                       hover

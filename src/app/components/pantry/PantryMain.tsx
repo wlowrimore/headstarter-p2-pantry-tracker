@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePantry } from "../../../providers/PantryProvider";
+import { useQuantityTotal } from "../../hooks/useQuantityTotal";
 import { Box } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import { extractFirstName } from "../../utils/helpers";
@@ -8,15 +10,25 @@ import ItemsTable from "./ItemsTable";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import AddItems from "./AddItems";
+import { Ingredients } from "@/app/interfaces";
+import { db } from "@/app/firebase";
 
-const PantryMain: React.FC = () => {
+interface PantryMainProps {
+  filteredItems: Ingredients[];
+}
+
+const PantryMain: React.FC<PantryMainProps> = ({}) => {
   const [showAddItems, setShowAddItems] = useState<boolean>(false);
+  const [itemsCount, setItemsCount] = useState<number>(0);
   const { data: session } = useSession();
   const name = extractFirstName();
+  const { pantryItems, setPantryItems } = usePantry();
 
   const handleOnClick = () => {
     setShowAddItems(!showAddItems);
   };
+
+  const totalQuantity = useQuantityTotal(db);
 
   return (
     <>
@@ -53,6 +65,21 @@ const PantryMain: React.FC = () => {
                 }}
               >
                 {name}&apos;s Pantry
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginLeft: "auto",
+                    fontSize: "1rem",
+                    fontWeight: "lighter",
+                  }}
+                >
+                  Your Pantry contains{" "}
+                  <span style={{ color: "#c8e599" }}>
+                    &nbsp;{totalQuantity}&nbsp;
+                  </span>{" "}
+                  items.{" "}
+                </span>
                 <Box
                   sx={{ "&:hover": { color: "#c8e599" } }}
                   onClick={handleOnClick}
@@ -75,7 +102,7 @@ const PantryMain: React.FC = () => {
           </Box>
         )}
 
-        <ItemsTable />
+        <ItemsTable filteredItems={[]} items={[]} />
       </Box>
     </>
   );
