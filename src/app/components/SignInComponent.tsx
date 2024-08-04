@@ -17,7 +17,8 @@ import { usePathname } from "next/navigation";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-
+import Image from "next/image";
+import GoogleLogo from "../../../public/images/logos/google.jpg";
 const SignInComponent = () => {
   const [isPath, setIsPath] = useState(false);
   const { data: session } = useSession();
@@ -35,8 +36,6 @@ const SignInComponent = () => {
     getPath();
   }, [path]);
 
-  console.log(`This is ${path}`);
-
   return (
     <Box
       sx={{
@@ -53,10 +52,11 @@ const SignInComponent = () => {
           sx={{
             fontSize: "0.8rem",
             color: "white",
+            backgroundColor: "#000000",
             borderColor: "white",
             borderWidth: "0.5rem",
             borderRadius: "60px",
-            ":hover": {
+            "&:hover": {
               color: "#b9c475",
               borderColor: "white",
               borderWidth: "0.5rem",
@@ -65,7 +65,18 @@ const SignInComponent = () => {
           }}
           variant="outlined"
         >
-          Sign In with your Google Account
+          <span
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+          >
+            <Image
+              src={GoogleLogo}
+              alt="William Lowrimore"
+              width={500}
+              height={500}
+              style={{ width: "1.5rem", height: "1.5rem", borderRadius: "50%" }}
+            />
+            Sign In with Google
+          </span>
         </Button>
       ) : (
         <Box sx={{ display: "flex", flexDirection: "row", gap: "5rem" }}>

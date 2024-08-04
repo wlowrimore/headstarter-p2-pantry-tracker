@@ -28,23 +28,23 @@ const EditingModal = ({
     onClose();
   };
 
-  const handleDelete = () => {};
-
   return (
     <Box
       sx={{
         position: "absolute",
-        top: "40%",
+        top: "38.5%",
         left: "50%",
         transform: "translate(-50%, -50%)",
         zIndex: "10",
         width: "100%",
-        maxWidth: "80rem",
+        maxWidth: "79.7rem",
         height: "30vh",
         maxHeight: "30vh",
+        margin: "0 auto",
         display: "flex",
-        border: "1px solid #478e59",
-        borderRadius: "1rem",
+        borderBottom: "1px solid #478e59",
+        borderBottomRightRadius: "1rem",
+        borderBottomLeftRadius: "1rem",
         boxShadow: "2px 2px 20px 0 rgba(0, 0, 0, 0.6)",
         backdropFilter: "blur(5px)",
         backgroundColor: "#D9EABE",
@@ -55,9 +55,10 @@ const EditingModal = ({
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <h1
           style={{
-            margin: "1rem 0 3rem 8.7rem",
+            margin: "2rem 0 4rem 5.7rem",
             color: "#000000",
             fontWeight: "lighter",
+            fontSize: "3rem",
           }}
         >
           Now Editing

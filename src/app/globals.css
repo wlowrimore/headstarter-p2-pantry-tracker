@@ -9,3 +9,27 @@
     display: none;
   }
 }
+
+.menu-link {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  color: #000000;
+  text-decoration: none;
+  &:hover {
+    background-color: #c8d9b0;
+  }
+}
+
+.modal-fx1 {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.modal-fx2 {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}

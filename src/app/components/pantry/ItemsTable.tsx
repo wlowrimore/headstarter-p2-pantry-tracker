@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePantry } from "../../../providers/PantryProvider";
 import {
   collection,
   doc,
@@ -22,11 +23,12 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import AddItems from "./AddItems";
-import PantryMain from "./PantryMain";
 import { Box, Button, Input } from "@mui/material";
 import EditingModal from "./modals/EditingModal";
 import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
-import ItemSearch from "../UI/ItemSearch";
+import ItemSearch from "../ItemSearch";
+import PantrySearch from "../UI/PantrySearch";
+import ListRefresh from "../UI/ListRefresh";
 const columns: readonly Column[] = [
   { id: "name", label: "Name", minWidth: 170 },
   { id: "unit", label: "Unit", minWidth: 100 },
@@ -34,17 +36,14 @@ const columns: readonly Column[] = [
   { id: "notes", label: "Notes", minWidth: 100 },
 ];
 
-function createData(
-  id: string,
-  name: string,
-  unit: string,
-  quantity: string,
-  notes: string
-): Ingredients {
-  return { id, name, unit, quantity, notes };
+interface ItemsTableProps {
+  ingredients: Ingredients[];
+  onFilterChange: (filter: string) => void;
+  onSearch: (query: string) => void;
 }
 
-export default function ItemsTable() {
+const ItemsTable: React.FC = () => {
+  const { pantryItems, setPantryItems } = usePantry();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAscendingOrder, setIsAscendingOrder] = useState<boolean>(true);
   const [selectedRow, setSelectedRow] = useState<Ingredients | null>(null);
@@ -56,6 +55,7 @@ export default function ItemsTable() {
     []
   );
   const [ingredients, setIngredients] = useState<Ingredients[]>();
+  const [displayedItems, setDisplayedItems] = useState<Ingredients[]>();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -83,7 +83,7 @@ export default function ItemsTable() {
   useEffect(() => {
     setIngredients(fetchedPantryItems);
   }, [fetchedPantryItems]);
-  console.log("INGREDIENTS", ingredients);
+
   const rows = fetchedPantryItems;
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -157,6 +157,24 @@ export default function ItemsTable() {
     setIsAscendingOrder(!isAscendingOrder);
   };
 
+  useEffect(() => {
+    setDisplayedItems(fetchedPantryItems);
+  }, [fetchedPantryItems]);
+
+  const handleFislterChange = (filter: string) => {
+    if (filter === "") {
+      setDisplayedItems(fetchedPantryItems);
+    } else {
+      const filteredItems = fetchedPantryItems.filter(
+        (item) => item.name.toLowerCase
+      );
+    }
+  };
+
+  const handleRefresh = () => {
+    console.log("handleRefresh", pantryItems);
+  };
+
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -173,9 +191,21 @@ export default function ItemsTable() {
             }}
           >
             <ItemSearch
-              ingredients={rows}
-              setFilteredItems={setFetchedPantryItems}
+              ingredients={fetchedPantryItems}
+              onFilterChange={setFetchedPantryItems}
             />
+
+            <p
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              <ListRefresh />
+            </p>
+
             <p
               onClick={toggleSort}
               style={{
@@ -210,7 +240,6 @@ export default function ItemsTable() {
             </TableHead>
             <TableBody>
               {rows
-                // .sort((a, b) => b.id.localeCompare(a.id))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -274,4 +303,6 @@ export default function ItemsTable() {
       </Paper>
     </>
   );
-}
+};
+
+export default ItemsTable;

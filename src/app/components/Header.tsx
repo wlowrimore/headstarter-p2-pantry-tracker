@@ -54,7 +54,7 @@ const Header = () => {
       </Link>
       {session?.user && session?.user?.image && (
         <>
-          {!isNotMain && (
+          {/* {!isNotMain && (
             <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
               <Stack direction="row" spacing={4} marginBottom={-0.5}>
                 <Link
@@ -127,7 +127,7 @@ const Header = () => {
                 </Link>
               </Stack>
             </Box>
-          )}
+          )} */}
 
           {/* User Profile */}
           <Box
@@ -140,12 +140,14 @@ const Header = () => {
               onClick={toggleMenu}
               sx={{
                 display: "flex",
+                backgroundColor: "#D9EABE",
+                borderRadius: "2rem",
                 alignItems: "center",
                 gap: "0.5rem",
                 padding: "0.3rem 0.7rem",
                 "&:hover": {
                   cursor: "pointer",
-                  backgroundColor: "#D9EABE",
+                  backgroundColor: "#F5F5DC",
                   borderRadius: "2rem",
                 },
               }}
@@ -178,30 +180,38 @@ const Header = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "center",
                   gap: "1rem",
                   padding: "3rem",
                   position: "absolute",
-                  zIndex: "1",
-                  right: "2%",
+                  zIndex: "10",
+                  left: "-8%",
                   transform: "translateX(-4%)" || "translateX(0%)",
-                  top: "5.7rem",
+                  top: "4.2rem",
                   backgroundColor: "#D9EABE",
-                  opacity: "0.8",
-                  width: "30rem",
-                  height: "30.5rem",
+                  width: "20rem",
+                  height: "13.8rem",
+                  border: "1px solid #5C5F15",
+                  borderBottomLeftRadius: "1.5rem",
+                  borderTopLeftRadius: "0.4rem",
                 }}
               >
+                <Link href="/dashboard" className="menu-link">
+                  Recipe Generator
+                </Link>
+                <Link href="/dashboard" className="menu-link">
+                  Dashboard
+                </Link>
                 <Box
-                  onClick={() => signOut()}
+                  onClick={() => signOut({ callbackUrl: "/" })}
                   sx={{
-                    fontSize: "1.5rem",
-                    fontWeight: "600",
+                    fontSize: "0.8rem",
+                    fontWeight: "500",
+                    padding: "0.5rem 1rem",
                     textTransform: "uppercase",
+                    borderRadius: "3rem",
                     cursor: "pointer",
                     "&:hover": {
-                      color: "#3B7B51",
-                      textDecoration: "underline",
+                      backgroundColor: "#c8d9b0",
                     },
                   }}
                 >

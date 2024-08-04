@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { usePantry } from "../../../providers/PantryProvider";
 import { Ingredients } from "../../interfaces";
 import { collection, addDoc } from "firebase/firestore";
 import { Box, Button, Input } from "@mui/material";
@@ -28,8 +29,6 @@ const AddItems: React.FC = () => {
           quantity: newPantryItem[0].quantity.trim(),
           notes: newPantryItem[0].notes.trim(),
         });
-
-        console.log("Document written with ID: ", docRef.id);
 
         setNewPantryItem([
           {
