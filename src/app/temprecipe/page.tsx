@@ -11,7 +11,9 @@ import Typography from "@mui/material/Typography";
 import { generateRecipes } from "@/app/actions";
 import { extractFirstName } from "../utils/helpers";
 import Loading from "./loading";
+import SiteLogo from "../../../public/images/logos/site-logo.png";
 import { Avatar, CardHeader, CardMedia, Grid, Input } from "@mui/material";
+import Image from "next/image";
 
 const bull = (
   <Box
@@ -41,7 +43,6 @@ export default function TempRecipe() {
     setIsLoading(true);
     try {
       let data = await generateRecipes(prompt);
-      console.log("Recipes:", recipes);
       setRecipes(data);
     } catch (error) {
       console.error("Error generating recipes:", error);
@@ -50,6 +51,7 @@ export default function TempRecipe() {
     }
   }
 
+  console.log("Recipes:", recipes);
   return (
     <>
       <Box
@@ -89,15 +91,14 @@ export default function TempRecipe() {
             <p
               style={{
                 color: "#000000",
-                fontSize: "1.4rem",
-                marginBottom: "1rem",
+                fontSize: "1.3rem",
               }}
             >
               Most of us have a hard time deciding what we want to cook, and it
               can be frustrating to try and come up with something that works
               with the ingredients we already have.
-              <br />
-              <br />
+            </p>
+            <p style={{ color: "#0e0e0e", marginBottom: "1rem" }}>
               Well, let&apos;s simplify this process. All you need to know is
               what ingredients you have on hand, and what theme you are in the
               mood for. Let&apos;s get started...shall we?
@@ -144,30 +145,108 @@ export default function TempRecipe() {
           )}
 
           {/* Recipe Cards */}
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "0.9rem",
+              padding: "1rem 0",
+            }}
+          >
             {recipes.map((recipe, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4}>
-                <Card sx={{ maxWidth: 345 }}>
+              <Box key={index}>
+                <Card
+                  sx={{
+                    maxHeight: "32rem",
+                    maxWidth: "26rem",
+                    overflow: "auto",
+                    border: "1px solid #478F59",
+                    borderRadius: "0.5rem",
+                  }}
+                >
                   <CardHeader
+                    sx={{
+                      backgroundColor: "#D9EABE",
+                      borderBottom: "1px solid gray",
+                      display: "flex",
+                      alignItems: "center",
+                      position: "sticky",
+                      top: "0",
+                      zIndex: "1",
+                    }}
+                    title={
+                      <Typography
+                        sx={{ fontWeight: "bold", lineHeight: "1.3" }}
+                      >
+                        {recipe.name}
+                      </Typography>
+                    }
                     avatar={
                       <Avatar
-                        sx={{ backgroundColor: "#F5F5DC" }}
+                        sx={{ backgroundColor: "#478F59" }}
                         aria-label="recipe"
                       >
-                        PT
-                        <h2>Recipe Name</h2>
+                        <Image
+                          src={SiteLogo}
+                          alt="William Lowrimore"
+                          width={200}
+                          height={200}
+                          style={{
+                            width: "90%",
+                            height: "90%",
+                            borderRadius: "50%",
+                            padding: "0.05rem",
+                          }}
+                        />
                       </Avatar>
                     }
                   />
-                  <CardMedia
-                    component="img"
-                    height="194"
-                    image="/static/images/cards/paella.jpg"
-                    alt="Paella dish"
-                  />
-                  <CardContent></CardContent>
+                  <CardContent>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "#1a1c1b", fontWeight: "500" }}
+                      >
+                        {recipe.description}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ padding: "1rem 0 0.5rem 0" }}>
+                      <Typography sx={{ fontWeight: "600" }}>
+                        Ingredients
+                      </Typography>
+                    </Box>
+                    {recipe.ingredients.map(
+                      (ingredient: string, index: number) => (
+                        <Box key={index}>
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "#1a1c1b", fontWeight: "500" }}
+                          >
+                            {ingredient}
+                          </Typography>
+                        </Box>
+                      )
+                    )}
+                    <Box sx={{ padding: "1rem 0 0.5rem 0" }}>
+                      <Typography sx={{ fontWeight: "600" }}>
+                        Instructions
+                      </Typography>
+                    </Box>
+                    {recipe.instructions.map(
+                      (instruction: string, index: number) => (
+                        <Box key={index}>
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "#1a1c1b", fontWeight: "500" }}
+                          >
+                            {index + 1}. {instruction}
+                          </Typography>
+                        </Box>
+                      )
+                    )}
+                  </CardContent>
                 </Card>
-              </Grid>
+              </Box>
             ))}
           </Box>
         </Box>
