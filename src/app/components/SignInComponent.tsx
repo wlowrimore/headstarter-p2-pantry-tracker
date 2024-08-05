@@ -109,7 +109,7 @@ const SignInComponent = () => {
             }}
           >
             <DashboardIcon />
-            &nbsp;Go To Dashboard
+            &nbsp;AI Recipe Generator
           </Link>
           <Button
             onClick={() => signOut()}

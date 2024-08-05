@@ -195,11 +195,8 @@ const Header = () => {
                   borderTopLeftRadius: "0.4rem",
                 }}
               >
-                <Link href="/dashboard" className="menu-link">
-                  Recipe Generator
-                </Link>
-                <Link href="/dashboard" className="menu-link">
-                  Dashboard
+                <Link href="/recipes" className="menu-link">
+                  AI Recipe Generator
                 </Link>
                 <Box
                   onClick={() => signOut({ callbackUrl: "/" })}
