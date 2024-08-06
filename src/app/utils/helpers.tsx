@@ -1,19 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import jsPDF from "jspdf";
 import { Ingredients, Recipe } from "../interfaces";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-export function extractFirstName() {
-  const { data: session } = useSession();
-  if (session) {
-    const firstName = session?.user?.name?.split(" ")[0];
-    return firstName;
-  } else {
-    return null;
-  }
-}
 
 export const getPantryItems = async () => {
   const querySnapshot = await getDocs(collection(db, "pantryItems"));

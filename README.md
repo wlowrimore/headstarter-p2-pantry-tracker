@@ -12,7 +12,13 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Manrope, a custom Google Font.
+
+## Deployed on Vercel
+
+<img src="public/images/sample-pics/home-page.webp" alt="William Lowrimore" width="800" height="450">
+<img src="public/images/sample-pics/pantry-page.webp" alt="William Lowrimore" width="800" height="600">
+<img src="public/images/sample-pics/recipe-generator-page.webp" alt="William Lowrimore" width="800" height="600">
 
 ## Technologies Used
 
@@ -32,12 +38,6 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [OpenAI Docs](https://platform.openai/docs)
 - [Codeium AI](https://codeium.com)
 - [Gemini AI](https://gemini.google.com)
-
-## Deployed on Vercel
-
-<img src="public/images/sample-pics/home-page.webp" alt="William Lowrimore" width="775" height="450">
-<img src="public/images/sample-pics/pantry-page.webp" alt="William Lowrimore" width="800" height="600">
-<img src="public/images/sample-pics/recipe-generator-page.webp" alt="William Lowrimore" width="800" height="600">
 
 ## Contact
 

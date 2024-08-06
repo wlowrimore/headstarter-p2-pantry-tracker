@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ingredients } from "../../interfaces";
 import { collection, addDoc } from "firebase/firestore";
 import { Box, Button, Input } from "@mui/material";
@@ -12,6 +12,14 @@ const AddItems: React.FC = () => {
   const [newPantryItem, setNewPantryItem] = useState<Ingredients[]>([
     { id: "", name: "", unit: "", quantity: "", notes: "" },
   ]);
+  const [successMsg, setSuccessMsg] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSuccessMsg("");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [successMsg]);
 
   const addItem = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,6 +46,7 @@ const AddItems: React.FC = () => {
             notes: "",
           },
         ]);
+        setSuccessMsg("Item added successfully!");
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -68,6 +77,19 @@ const AddItems: React.FC = () => {
         justifyContent: "center",
       }}
     >
+      {successMsg && (
+        <p
+          style={{
+            position: "absolute",
+            top: "22%",
+            color: "#F5F5DC",
+            fontSize: "1.2rem",
+            fontWeight: "lighter",
+          }}
+        >
+          {successMsg}
+        </p>
+      )}
       <form
         onSubmit={addItem}
         style={{

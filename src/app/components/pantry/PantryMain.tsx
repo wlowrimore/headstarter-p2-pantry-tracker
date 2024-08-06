@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuantityTotal } from "../../hooks/useQuantityTotal";
 import { Box } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
-import { extractFirstName } from "../../utils/helpers";
+import { useExtractFirstName } from "@/app/hooks/useExtractFirstName";
 import ItemsTable from "./ItemsTable";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -19,7 +19,7 @@ interface PantryMainProps {
 const PantryMain: React.FC<PantryMainProps> = ({}) => {
   const [showAddItems, setShowAddItems] = useState<boolean>(false);
   const { data: session } = useSession();
-  const name = extractFirstName();
+  const name = useExtractFirstName();
 
   const handleOnClick = () => {
     setShowAddItems(!showAddItems);
