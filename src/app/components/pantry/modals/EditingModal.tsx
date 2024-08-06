@@ -5,13 +5,13 @@ import { Box, Button, Input } from "@mui/material";
 import { EditingModalProps, Ingredients } from "../../../interfaces";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-const EditingModal = ({
+const EditingModal: React.FC<EditingModalProps> = ({
   item,
   onClose,
   onSave,
   onDelete,
   handleSave,
-}: EditingModalProps) => {
+}) => {
   if (!item) {
     return null;
   }

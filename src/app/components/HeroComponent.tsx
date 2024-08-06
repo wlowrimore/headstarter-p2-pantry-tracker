@@ -165,10 +165,11 @@ const HeroComponent = () => {
             width={700}
             height={500}
             style={{
+              display: "block",
               width: "100%",
               height: "100%",
-              minWidth: "50%",
-              minHeight: "50%",
+              minWidth: "30rem",
+              minHeight: "20rem",
               color: "green",
               borderRadius: "5rem",
               boxShadow: "0 0 1rem 0 rgba(0, 0, 0, 0.7)",

@@ -10,7 +10,6 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-
 import { Column, Ingredients } from "../../interfaces";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -51,7 +50,7 @@ const ItemsTable: React.FC<ItemsTableProps> = () => {
   const [fetchedPantryItems, setFetchedPantryItems] = useState<Ingredients[]>(
     []
   );
-  const [ingredients, setIngredients] = useState<Ingredients[]>();
+  const [ingredients, setIngredients] = useState<Ingredients[]>([]);
   const [displayedItems, setDisplayedItems] = useState<Ingredients[]>();
 
   useEffect(() => {
@@ -111,25 +110,28 @@ const ItemsTable: React.FC<ItemsTableProps> = () => {
 
   const handleDelete = async () => {
     if (selectedRow && ingredients) {
-      console.log("Delete item:", selectedRow.name);
+      console.log("Ingredients: ", ingredients);
 
-      await deleteDoc(doc(db, "pantryItems", selectedRow.id))
-        .then(() => {
-          const updatedList = ingredients.filter(
-            (item: Ingredients) => item.id !== selectedRow.id
-          );
-          setIngredients(updatedList);
-        })
-        .catch((error) => {
-          console.error(
-            "Error marking item as deleted in the database:",
-            error
-          );
-        });
+      try {
+        // Optimistic update: remove item from UI immediately
+        const updatedList = ingredients.filter(
+          (item: Ingredients) => item.id !== selectedRow.id
+        );
+        setIngredients(updatedList);
+
+        await deleteDoc(doc(db, "pantryItems", selectedRow.id));
+        console.log("Item deleted successfully");
+      } catch (error) {
+        console.error("Error deleting item:", error);
+        // Handle error, e.g., show error message to user, revert to original state
+        setIngredients(ingredients); // Revert to original state if deletion fails
+      }
 
       setSelectedRow(null);
       setIsModalOpen(false);
     }
+    console.log("DETETE CALLLED: ", selectedRow);
+    console.log("UPDATED LIST: ", ingredients);
   };
   const toggleSort = () => {
     console.log("TOGGLING SORT!!!!", toggleSort);
