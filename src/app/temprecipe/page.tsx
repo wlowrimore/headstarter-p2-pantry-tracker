@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import jsPDF from "jspdf";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -12,6 +13,7 @@ import { generateRecipes } from "@/app/actions";
 import { extractFirstName } from "../utils/helpers";
 import Loading from "./loading";
 import SiteLogo from "../../../public/images/logos/site-logo.png";
+import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import { Avatar, CardHeader, CardMedia, Grid, Input } from "@mui/material";
 import Image from "next/image";
 
@@ -50,6 +52,52 @@ export default function TempRecipe() {
       setIsLoading(false);
     }
   }
+
+  const handleDownloadPDF = (recipeData: Recipe) => {
+    const pdf = new jsPDF();
+
+    const margin = {
+      top: 10,
+      right: 10,
+      bottom: 10,
+      left: 10,
+    };
+
+    const contentWidth =
+      pdf.internal.pageSize.width - margin.left - margin.right;
+
+    let currentY = margin.top;
+    pdf.setFontSize(12);
+
+    pdf.text(`Recipe Name: ${recipeData.name}`, margin.left, currentY);
+    currentY += 10;
+
+    const descriptionLines = pdf.splitTextToSize(
+      recipeData.description,
+      contentWidth
+    );
+    descriptionLines.forEach((line: string | string[], index: number) => {
+      pdf.text(line, margin.left, currentY + index * 10);
+    });
+    currentY += descriptionLines.length * 10;
+
+    pdf.text("Ingredients:", margin.left, currentY);
+    currentY += 10;
+    recipeData.ingredients.forEach((ingredient, index) => {
+      pdf.text(`- ${ingredient}`, margin.left, currentY + index * 10);
+    });
+    currentY += recipeData.ingredients.length * 10;
+
+    const instructionsLines = pdf.splitTextToSize(
+      recipeData.instructions.join("\n"),
+      contentWidth
+    );
+    instructionsLines.forEach((line: string | string[], index: number) => {
+      pdf.text(line, margin.left, currentY + index * 10);
+    });
+
+    pdf.save("recipe.pdf");
+  };
 
   console.log("Recipes:", recipes);
   return (
@@ -201,7 +249,28 @@ export default function TempRecipe() {
                       </Avatar>
                     }
                   />
+                  <Button
+                    onClick={() => handleDownloadPDF(recipe)}
+                    variant="text"
+                    sx={{
+                      color: "#2B3C34",
+                      fontSize: "0.5rem",
+                      borderRadius: "2rem",
+                      padding: "0 0.5rem",
+                      marginTop: "0.5rem",
+                      marginLeft: "0.3rem",
+                      "&:hover": {
+                        backgroundColor: "#D9EABE",
+                      },
+                    }}
+                  >
+                    <LocalPrintshopOutlinedIcon sx={{ width: "1rem" }} />
+                    &nbsp; Print Recipe
+                  </Button>
                   <CardContent>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      Description
+                    </Typography>
                     <Box>
                       <Typography
                         variant="body2"
