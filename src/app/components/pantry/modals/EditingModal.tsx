@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box, Button, Input } from "@mui/material";
 import { EditingModalProps, Ingredients } from "../../../interfaces";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -43,8 +43,7 @@ const EditingModal = ({
         margin: "0 auto",
         display: "flex",
         borderBottom: "1px solid #478e59",
-        borderBottomRightRadius: "1rem",
-        borderBottomLeftRadius: "1rem",
+        borderRadius: "1.5rem",
         boxShadow: "2px 2px 20px 0 rgba(0, 0, 0, 0.6)",
         backdropFilter: "blur(5px)",
         backgroundColor: "#D9EABE",

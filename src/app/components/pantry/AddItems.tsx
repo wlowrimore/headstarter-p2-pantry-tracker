@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { usePantry } from "../../../providers/PantryProvider";
 import { Ingredients } from "../../interfaces";
 import { collection, addDoc } from "firebase/firestore";
 import { Box, Button, Input } from "@mui/material";

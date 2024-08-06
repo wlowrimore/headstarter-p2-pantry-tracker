@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import HeroComponent from "./components/HeroComponent";
 
 export default function Home() {

@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import jsPDF from "jspdf";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -12,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import { generateRecipes } from "@/app/actions";
 import { extractFirstName } from "../utils/helpers";
 import Loading from "./loading";
+import { Recipe } from "@/app/interfaces";
+import { handleDownloadPDF } from "../utils/helpers";
 import SiteLogo from "../../../public/images/logos/site-logo.png";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import { Avatar, CardHeader, CardMedia, Grid, Input } from "@mui/material";
@@ -25,14 +25,6 @@ const bull = (
     •
   </Box>
 );
-
-interface Recipe {
-  name: string;
-  description: string;
-  ingredients: string[];
-  instructions: string[];
-  imageUrl: string;
-}
 
 export default function TempRecipe() {
   const [expanded, setExpanded] = useState(false);
@@ -53,50 +45,8 @@ export default function TempRecipe() {
     }
   }
 
-  const handleDownloadPDF = (recipeData: Recipe) => {
-    const pdf = new jsPDF();
-
-    const margin = {
-      top: 10,
-      right: 10,
-      bottom: 10,
-      left: 10,
-    };
-
-    const contentWidth =
-      pdf.internal.pageSize.width - margin.left - margin.right;
-
-    let currentY = margin.top;
-    pdf.setFontSize(12);
-
-    pdf.text(`Recipe Name: ${recipeData.name}`, margin.left, currentY);
-    currentY += 10;
-
-    const descriptionLines = pdf.splitTextToSize(
-      recipeData.description,
-      contentWidth
-    );
-    descriptionLines.forEach((line: string | string[], index: number) => {
-      pdf.text(line, margin.left, currentY + index * 10);
-    });
-    currentY += descriptionLines.length * 10;
-
-    pdf.text("Ingredients:", margin.left, currentY);
-    currentY += 10;
-    recipeData.ingredients.forEach((ingredient, index) => {
-      pdf.text(`- ${ingredient}`, margin.left, currentY + index * 10);
-    });
-    currentY += recipeData.ingredients.length * 10;
-
-    const instructionsLines = pdf.splitTextToSize(
-      recipeData.instructions.join("\n"),
-      contentWidth
-    );
-    instructionsLines.forEach((line: string | string[], index: number) => {
-      pdf.text(line, margin.left, currentY + index * 10);
-    });
-
-    pdf.save("recipe.pdf");
+  const handleDownload = (recipeData: Recipe) => {
+    handleDownloadPDF(recipeData);
   };
 
   console.log("Recipes:", recipes);
@@ -250,7 +200,7 @@ export default function TempRecipe() {
                     }
                   />
                   <Button
-                    onClick={() => handleDownloadPDF(recipe)}
+                    onClick={() => handleDownload(recipe)}
                     variant="text"
                     sx={{
                       color: "#2B3C34",

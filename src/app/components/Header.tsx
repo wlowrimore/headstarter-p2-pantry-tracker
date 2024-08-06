@@ -1,7 +1,6 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { User } from "../interfaces";
 import Image from "next/image";
 import { Box, Button, Link, Stack, TextField } from "@mui/material";
 import SiteLogo from "../../../public/images/logos/site-logo.png";
@@ -54,87 +53,13 @@ const Header = () => {
       </Link>
       {session?.user && session?.user?.image && (
         <>
-          {/* {!isNotMain && (
-            <Box display={"flex"} alignItems={"end"} gap={"1rem"}>
-              <Stack direction="row" spacing={4} marginBottom={-0.5}>
-                <Link
-                  href="#"
-                  sx={{
-                    textDecoration: "none",
-                    color: "black",
-                    "&:hover": {
-                      textDecoration: "underline",
-                      color: "#5C5F15",
-                    },
-                    padding: "0.5rem",
-                  }}
-                >
-                  <p>My Items</p>
-                </Link>
-                <Link
-                  href="#"
-                  sx={{
-                    textDecoration: "none",
-                    color: "black",
-                    "&:hover": {
-                      textDecoration: "underline",
-                      color: "#5C5F15",
-                    },
-                    padding: "0.5rem",
-                  }}
-                >
-                  <p>Add Items</p>
-                </Link>
-                <Link
-                  href="#"
-                  underline={"hover"}
-                  sx={{
-                    color: "black",
-                    textDecoration: "none",
-                    padding: "0.5rem",
-                  }}
-                >
-                  <p>Remove Items</p>
-                </Link>
-                <Link
-                  href="#"
-                  underline={"hover"}
-                  sx={{
-                    textDecoration: "none",
-                    color: "black",
-                    "&:hover": {
-                      textDecoration: "underline",
-                      color: "#5C5F15",
-                    },
-                    padding: "0.5rem",
-                  }}
-                >
-                  <p>Update List</p>
-                </Link>
-                <Link
-                  href="#"
-                  sx={{
-                    textDecoration: "none",
-                    color: "black",
-                    "&:hover": {
-                      textDecoration: "underline",
-                      color: "#5C5F15",
-                    },
-                    padding: "0.5rem",
-                  }}
-                >
-                  <p>Dashboard</p>
-                </Link>
-              </Stack>
-            </Box>
-          )} */}
-
           {/* User Profile */}
           <Box
             display={"flex"}
             alignItems={"end"}
             gap={"1rem"}
             position={"relative"}
+            marginBottom={"0.5rem"}
           >
             <Box
               onClick={toggleMenu}
@@ -181,21 +106,27 @@ const Header = () => {
                   display: "flex",
                   flexDirection: "column",
                   gap: "1rem",
-                  padding: "3rem",
+                  padding: "3rem 0.5rem",
                   position: "absolute",
                   zIndex: "10",
                   left: "-8%",
                   transform: "translateX(-4%)" || "translateX(0%)",
                   top: "4.2rem",
                   backgroundColor: "#D9EABE",
-                  width: "20rem",
-                  height: "13.8rem",
+                  width: "19.95rem",
+                  height: "17.5rem",
                   border: "1px solid #5C5F15",
-                  borderBottomLeftRadius: "1.5rem",
+                  borderBottomLeftRadius: "0.4rem",
                   borderTopLeftRadius: "0.4rem",
                 }}
               >
-                <Link href="/recipes" className="menu-link">
+                <Link href="/" className="menu-link">
+                  Home
+                </Link>
+                <Link href="/pantry" className="menu-link">
+                  My Pantry
+                </Link>
+                <Link href="/recipe-generator" className="menu-link">
                   AI Recipe Generator
                 </Link>
                 <Box

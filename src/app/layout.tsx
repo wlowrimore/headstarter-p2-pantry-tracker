@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import SignInComponent from "./components/SignInComponent";
@@ -8,7 +8,7 @@ import { PantryProvider } from "@/providers/PantryProvider";
 import { SetStateAction } from "react";
 import { Ingredients } from "./interfaces";
 
-const inter = Inter({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pantry Tracker",
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={manrope.className}>
         <SessionWrapper>
           <PantryProvider>
             <Header />
@@ -31,7 +31,6 @@ export default function RootLayout({
                 backgroundColor: "#478F59",
                 maxWidth: "80rem",
                 display: "flex",
-                // justifyContent: "center",
                 margin: "0 auto",
               }}
             >
@@ -41,7 +40,6 @@ export default function RootLayout({
               style={{
                 maxWidth: "80rem",
                 display: "flex",
-                // justifyContent: "center",
                 margin: "0 auto",
               }}
             >

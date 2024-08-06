@@ -35,3 +35,11 @@ export interface Column {
   align?: "right";
   format?: (value: number) => string;
 }
+
+export interface Recipe {
+  name: string;
+  description: string;
+  ingredients: string[];
+  instructions: string[];
+  imageUrl: string;
+}

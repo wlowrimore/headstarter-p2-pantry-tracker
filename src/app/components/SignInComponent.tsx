@@ -1,45 +1,20 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Link,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Link } from "@mui/material";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Image from "next/image";
 import GoogleLogo from "../../../public/images/logos/google.jpg";
 const SignInComponent = () => {
-  const [isPath, setIsPath] = useState(false);
   const { data: session } = useSession();
-  const path = usePathname();
-
-  useEffect(() => {
-    const getPath = () => {
-      if (path === "/pantry") {
-        setIsPath(true);
-      } else {
-        setIsPath(false);
-      }
-    };
-
-    getPath();
-  }, [path]);
 
   return (
     <Box
       sx={{
-        display: isPath ? "none" : "flex",
+        display: "flex",
         justifyContent: "center",
         width: "100%",
         marginTop: "0.3rem",
@@ -97,7 +72,7 @@ const SignInComponent = () => {
             &nbsp;Manage Pantry
           </Link>
           <Link
-            href="#"
+            href="/recipe-generator"
             sx={{
               display: "flex",
               alignItems: "center",

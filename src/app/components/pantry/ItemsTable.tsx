@@ -144,8 +144,6 @@ const ItemsTable: React.FC<ItemsTableProps> = () => {
     setIsAscendingOrder(!isAscendingOrder);
   };
 
-  console.log("TOGGLE SORT!!!!, toggleSort:", toggleSort);
-
   useEffect(() => {
     setDisplayedItems(fetchedPantryItems);
   }, [fetchedPantryItems]);
@@ -183,8 +181,6 @@ const ItemsTable: React.FC<ItemsTableProps> = () => {
 
   const rows = filteredItems;
 
-  console.log("Rows:", rows);
-
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -201,16 +197,19 @@ const ItemsTable: React.FC<ItemsTableProps> = () => {
             }}
           >
             <>
-              {filteredItems.length > 0 && (
-                <form style={{ display: "flex", alignItems: "center" }}>
-                  <Input
-                    onChange={handleSearch}
-                    value={searchQuery}
-                    type="text"
-                    placeholder="Search By Name"
-                  />
-                </form>
-              )}
+              <form style={{ display: "flex", alignItems: "center" }}>
+                <Input
+                  onChange={handleSearch}
+                  value={searchQuery}
+                  type="text"
+                  placeholder="Search By Name"
+                  sx={{
+                    width: "100%",
+                    backgroundColor: "#eaeaea",
+                    padding: "0.25rem 0.5rem",
+                  }}
+                />
+              </form>
             </>
 
             <p
@@ -221,7 +220,20 @@ const ItemsTable: React.FC<ItemsTableProps> = () => {
                 gap: "0.5rem",
               }}
             ></p>
-
+            {filteredItems.length === 0 && (
+              <Box
+                sx={{
+                  fontSize: "1.2rem",
+                  width: "50%",
+                  display: "flex",
+                  justifyContent: "start",
+                  paddingLeft: "8.5rem",
+                  alignItems: "center",
+                }}
+              >
+                No Items Found
+              </Box>
+            )}
             <p
               onClick={toggleSort}
               style={{

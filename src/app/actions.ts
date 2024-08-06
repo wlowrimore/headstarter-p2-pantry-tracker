@@ -16,6 +16,6 @@ export async function generateRecipes(prompt: string) {
     return data;
   } catch (error) {
     console.error("Error generating recipes:", error);
-    throw error; // Re-throw the error to handle it at a higher level
+    throw error;
   }
 }
