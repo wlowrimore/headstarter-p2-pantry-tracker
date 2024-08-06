@@ -33,3 +33,23 @@
   opacity: 1;
   transition: opacity 300ms ease-in-out;
 }
+
+@media (max-width: 600px) {
+  .MuiList-root,
+  .MuiListItem-root {
+    display: block;
+  }
+
+  .MuiListItemIcon-root,
+  .MuiListItemText-root {
+    text-align: center;
+  }
+
+  .MuiListItemIcon-root {
+    margin-right: 0;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+}

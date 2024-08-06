@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Hidden,
 } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -31,8 +32,11 @@ const HeroComponent = () => {
         }}
       >
         <Grid
+          item
+          xs={12}
+          md={6}
           sx={{
-            width: "40%",
+            // width: "40%",
             color: "#D9EABE",
             padding: "0 1rem",
           }}
@@ -78,7 +82,10 @@ const HeroComponent = () => {
                   }}
                 >
                   <TrackChangesOutlinedIcon
-                    style={{ width: "2rem", height: "2rem" }}
+                    sx={{
+                      width: "2rem",
+                      height: "2rem",
+                    }}
                   />
                   <ListItemText>
                     <h3 style={{ fontWeight: "lighter", fontSize: "1.5rem" }}>
@@ -155,25 +162,31 @@ const HeroComponent = () => {
           </Box>
         </Grid>
         <Grid
+          item
+          xs={0}
+          md={6}
           sx={{
             width: "60%",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <Image
             src={Hero}
             alt="Pantry Hero"
-            width={700}
+            width={800}
             height={500}
             style={{
               display: "block",
               width: "100%",
               height: "100%",
-              minWidth: "30rem",
-              minHeight: "20rem",
+              minWidth: "20rem",
+              minHeight: "12rem",
               color: "green",
               borderRadius: "5rem",
               boxShadow: "0 0 1rem 0 rgba(0, 0, 0, 0.7)",
             }}
+            className="image-visual"
           />
         </Grid>
       </Grid>

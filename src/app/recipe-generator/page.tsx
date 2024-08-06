@@ -204,13 +204,15 @@ export default function TempRecipe() {
                     variant="text"
                     sx={{
                       color: "#2B3C34",
-                      fontSize: "0.5rem",
-                      borderRadius: "2rem",
+                      fontSize: "0.6rem",
+
                       padding: "0 0.5rem",
                       marginTop: "0.5rem",
                       marginLeft: "0.3rem",
+                      backgroundColor: "#D9EABE",
                       "&:hover": {
-                        backgroundColor: "#D9EABE",
+                        backgroundColor: "#d0e5ac",
+                        borderRadius: "2rem",
                       },
                     }}
                   >

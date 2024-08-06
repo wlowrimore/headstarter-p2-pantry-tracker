@@ -37,7 +37,7 @@ const EditingModal: React.FC<EditingModalProps> = ({
         transform: "translate(-50%, -50%)",
         zIndex: "10",
         width: "100%",
-        maxWidth: "79.7rem",
+        maxWidth: "75rem",
         height: "30vh",
         maxHeight: "30vh",
         margin: "0 auto",
