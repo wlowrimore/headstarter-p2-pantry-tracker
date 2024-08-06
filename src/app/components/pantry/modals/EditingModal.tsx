@@ -5,6 +5,7 @@ import { Box, Button, Input } from "@mui/material";
 import { EditingModalProps, Ingredients } from "../../../interfaces";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+
 const EditingModal: React.FC<EditingModalProps> = ({
   item,
   onClose,
@@ -12,10 +13,21 @@ const EditingModal: React.FC<EditingModalProps> = ({
   onDelete,
   handleSave,
 }) => {
+  const defaultEditedItem: Ingredients = {
+    name: "",
+    quantity: "0",
+    unit: "",
+    notes: "",
+    id: "",
+  };
+
+  const [editedItem, setEditedItem] = useState<Ingredients>(
+    item || defaultEditedItem
+  );
+
   if (!item) {
     return null;
   }
-  const [editedItem, setEditedItem] = useState<Ingredients>(item);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedItem({ ...editedItem, [e.target.name]: e.target.value });
