@@ -16,6 +16,8 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Deployed on Vercel
 
+Visit Pantry Tracker [here](https://headstarter-p2-pantry-tracker.vercel.app/).
+
 <img src="public/images/sample-pics/home-page.webp" alt="William Lowrimore" width="800" height="450">
 <img src="public/images/sample-pics/pantry-page.webp" alt="William Lowrimore" width="800" height="600">
 <img src="public/images/sample-pics/recipe-generator-page.webp" alt="William Lowrimore" width="800" height="600">
